@@ -6,19 +6,45 @@ using namespace std;
 #define HEIGHT 8
 #define BPP 24
 
-int main() {
+int cnt;
+
+int stoc(char* s) {
+	int a = atoi(s);
+	return min(255,max(0,a));
+}
+
+int main(int argc, char* argv[]) {
 	FreeImage_Initialise();
 	FIBITMAP* bitmap = FreeImage_Allocate(WIDTH,HEIGHT,BPP);
 	RGBQUAD black;
 	RGBQUAD white;
-	black.rgbBlue = 0;
-	black.rgbGreen = 0;
-	black.rgbRed = 0;
-	white.rgbBlue = 255;
-	white.rgbGreen = 255;
-	white.rgbRed = 255;
 
-	char name[7];
+	vector<int> argList;
+	for(int i=1; i<min(argc,7); i++) {
+		argList.push_back(stoc(argv[i]));
+	}
+
+	if(argc>=4) {
+		black.rgbRed = argList[0];
+		black.rgbGreen = argList[1];
+		black.rgbBlue = argList[2];
+	} else {
+		black.rgbRed = 0;
+		black.rgbGreen = 0;
+		black.rgbBlue = 0;
+	}
+
+	if(argc>=7) {
+		white.rgbRed = argList[3];
+		white.rgbGreen = argList[4];
+		white.rgbBlue = argList[5];
+	} else {
+		white.rgbRed = 255;
+		white.rgbGreen = 255;
+		white.rgbBlue = 255;
+	}
+
+	char name[8];
 
 	for(int i=0; i<16; i++) {
 		for(int j=0; j<16; j++) {
@@ -83,14 +109,41 @@ int main() {
 					FreeImage_SetPixelColor(bitmap,0,4,&white);
 				}
 
-				//saving image
-				snprintf(name, 7, "%01X%01X.png", i, j);
-				if(FreeImage_Save(FIF_PNG,bitmap,name,0))
-					printf("Image %s Saved!\n",name);
+				for(int k=0; k<16; k++) {
+					if(		(((k>>3)&1)==0||(((i>>3)&1)==1&&((i>>0)&1)==1))&&
+							(((k>>2)&1)==0||(((i>>3)&1)==1&&((i>>2)&1)==1))&&
+							(((k>>1)&1)==0||(((i>>2)&1)==1&&((i>>1)&1)==1))&&
+							(((k>>0)&1)==0||(((i>>1)&1)==1&&((i>>0)&1)==1))) {
+
+						FreeImage_SetPixelColor(bitmap,0,0,&black);
+						FreeImage_SetPixelColor(bitmap,0,7,&black);
+						FreeImage_SetPixelColor(bitmap,7,0,&black);
+						FreeImage_SetPixelColor(bitmap,7,7,&black);
+
+						if((k>>3)&1)
+							FreeImage_SetPixelColor(bitmap,0,7,&white);
+						if((k>>2)&1)
+							FreeImage_SetPixelColor(bitmap,7,7,&white);
+						if((k>>1)&1)
+							FreeImage_SetPixelColor(bitmap,7,0,&white);
+						if((k>>0)&1)
+							FreeImage_SetPixelColor(bitmap,0,0,&white);
+
+
+
+						cnt++;
+						//saving image
+						snprintf(name, 8, "%01X%01X%01X.png", i, j, k);
+						if(FreeImage_Save(FIF_PNG,bitmap,name,0))
+							printf("Image %s Saved!\n",name);
+
+					}
+				}
 			}
 		}
 	}
 
+	printf("Total image: %d",cnt);
 	FreeImage_DeInitialise();
 	return 0;
 }
