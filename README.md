@@ -24,7 +24,7 @@ MinimapGen 255 0 0
 ```
 MinimapGen BorderR BorderG BorderB FillR FillG FillB
 ```
-Border(R/G/B) : Color(Red/Green/Blue) of border in decimal integer [0-255]
+Border(R/G/B) : Color(Red/Green/Blue) of border in decimal integer [0-255]\
 Fill(R/G/B) : Color(Red/Green/Blue) of fill in decimal integer [0-255]
 #### Example:
 ```
