@@ -32,3 +32,5 @@ MinimapGen 255 0 0 0 255 0
 ```
 #### Result:
 ![Imgur](https://i.imgur.com/B20RFVS.png)
+## Generated image name details
+![Imgur](https://i.imgur.com/Bz2WpQT.png)
