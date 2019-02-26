@@ -1,4 +1,4 @@
-# Rabi-Ribi-style-minimap-generator
+# Rabi-Ribi style minimap generator
 Generate tiles for minimap\
 ![Imgur](https://i.imgur.com/4UyrS0X.png)
 
